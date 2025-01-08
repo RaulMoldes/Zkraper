@@ -34,7 +34,8 @@ def scrape_page_basic(soup, logger, url: str):
             "domain": domain,
             "base_url": url,
             "meta": meta_data,
-            "links": list(set(links)), ## REMOVE DUPLICATES
+            "links_data": links,
+            "links": list(set(links['internal'])), ## REMOVE DUPLICATES
             "text": text,
             "images": images
 

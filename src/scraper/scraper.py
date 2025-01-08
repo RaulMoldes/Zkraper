@@ -8,7 +8,7 @@ class Scraper:
     '''
 
     def __init__(self, pid:int, url:str, driver, user_agent, logger, routine: callable):
-        self.__pid = id
+        self.__pid = pid
         self.__url = url
         self.__driver = driver
         self.__user_agent = user_agent
@@ -31,6 +31,7 @@ class Scraper:
     
     def get_pid(self):
         return self.__pid
+
     
     def get_soup_from_url(self):
         self.__driver.get(self.__url)
@@ -49,6 +50,7 @@ class Scraper:
             self.__output = response
             if response.get("status") == 'SUCCEED':
                 self.__links = set(response.get('links'))
+                
         else:
             self.logger.info(f"Skipping: {self.__url}")
 
@@ -68,15 +70,16 @@ class Scraper:
             # If the folder does not exist, create it along with subfolders
             os.makedirs(output_path)  # Create the main folder
 
-        for subpath in ['images', 'text', 'links', 'meta']:
+        for subpath in ['images', 'text', 'links_data', 'meta']:
             if not os.path.exists(os.path.join(output_path, subpath)):
                 os.makedirs(os.path.join(output_path, subpath))
 
             if self.__output is not None:
                 data = self.__output.get(subpath)
-                
-                with open(os.path.join(output_path, subpath), 'wb'):
-                    pickle.dump(data)
+                joined_subpath = os.path.join(output_path, subpath)
+                file = 'output.bin'
+                with open(os.path.join(joined_subpath, file), 'wb') as f:
+                    pickle.dump(data, f)
             
 
     def can_scrape(self, minimum_content_length = 50, items_to_check = ['article', 'main', 'div', 'section']):

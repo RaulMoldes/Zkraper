@@ -34,6 +34,7 @@ def main():
         max_scrapers = args.max_scrapers
 
     )
+    sk.run()
    
 
 if __name__ == '__main__':

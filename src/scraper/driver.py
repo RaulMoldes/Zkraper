@@ -5,11 +5,8 @@ import re
 from selenium import webdriver  # Usar selenium-wire en lugar de selenium
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options as ChromeOptions
-from selenium.webdriver.firefox.service import Service as FirefoxService
-from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
+
 
 def start_driver(driver_options_path: str):
     # Load driver configuration from the JSON file

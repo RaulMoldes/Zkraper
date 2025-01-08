@@ -32,9 +32,8 @@ Explanation:
 ## Command Line Arguments
 The main.py script requires several command-line arguments to control the scraping behavior. Below is a breakdown of the options:
 
-* `--driver_options`: (Required) Path to a JSON file containing Chrome driver options (e.g., to specify headless mode, disable images, etc.).
 * `--base_url`: (Required) The base URL of the website you want to scrape.
 * `--max-scrapers`: (Optional) The maximum number of concurrent scrapers to run. Default is 10.
 
 ## Example:
- - `python -m engine --driver-options "configs/scraper_config.json" --base-url "https://www.marca.com" --max-scrapers 10`
+ - `python -m main --base-url "https://www.marca.com" --max-scrapers 10`

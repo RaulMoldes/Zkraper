@@ -5,12 +5,18 @@ from queue import Queue
 import logging
 import logging.config
 import yaml
-from concurrent.futures import as_completed, ThreadPoolExecutor as executor
-
+from concurrent.futures import as_completed, ThreadPoolExecutor
+from functools import partial
 
 
 
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+
+def scrape(scraper: Scraper):
+    '''
+    Wrapper for the start_scraping function of the Scraper instance
+    '''
+    return scraper.start_scraping()
 class ZkraperEngine:
     """
     ZkraperEngine class manages the scraping process by initializing and running multiple scrapers.
@@ -40,7 +46,9 @@ class ZkraperEngine:
         self.__max_scrapers = max_scrapers
         self.queue = Queue() ## Initialize the queue which will be shared by all scrapers
         self.visited_links = set() ## Maintain info about the urls that are already visited.
+        print("configurando log")
         self.__logger =  self.__config_log(log_config_file)
+        print("se configuro log")
         self.next_pid = pid + 1
 
     def get_pid(self):
@@ -81,7 +89,7 @@ class ZkraperEngine:
         """
         self.__logger.info("Starting Zkraper Engine!")
         self.queue.put(self.__start_url)
-        with executor(max_workers=self.__max_scrapers):
+        with ThreadPoolExecutor(max_workers=self.__max_scrapers) as executor:
             futures = list()
 
             while not self.queue.empty() or any([future.running() for future in futures]):
@@ -96,17 +104,23 @@ class ZkraperEngine:
                                       user_agent = USER_AGENT, logger = self.__logger, routine = scrape_page_basic)
                         
                         self.next_pid = pid + 1
-                        executor.submit(scraper.start_scraping())
+                        future = executor.submit(scrape, scraper= scraper)
+                        futures.append(future)
 
                 # Clean up completed futures
                 for future in as_completed(futures):
                     futures.remove(future)
                     scraper = future.result() 
                     links = scraper.get_links()  
+                    sid = scraper.get_pid()
                     ## Update the visited links
-                    self.queue.put(links)
-                    self.visited_links.update(links)
-                    output_path = 'Zkraper' + str(self.get_pid()) + '/' + scraper.get_pid()
+                    for l in list(links):
+                        self.queue.put(l)
+                        self.visited_links.update(l)
+                    id = self.get_pid()
+                   
+                    print(sid)
+                    output_path = 'Zkraper-' + str(id) + '/' + str(sid)
                     scraper.save_output(output_path)
 
         self.quit()
