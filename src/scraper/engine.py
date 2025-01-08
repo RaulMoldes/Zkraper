@@ -1,107 +1,104 @@
-import requests
-from bs4 import BeautifulSoup
-from src.utils.scraping_utils import extract_all_links, extract_images, extract_meta_data, extract_all_text
-from src.utils.output_utils import save_to_files
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from src.scraper.driver import start_driver, quit_driver
+from src.scraper.scraper import Scraper
+from src.scraper.functions import scrape_page_basic
 from queue import Queue
-from src.scraper.driver import log_in
-import os
+import logging
+import logging.config
+import yaml
+from concurrent.futures import as_completed, ThreadPoolExecutor as executor
 
-def is_page_scrapeable(url:str, user_agent:str = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'):
-    try:
 
-        response = requests.get(url, headers={'User-Agent':user_agent})
-        
-       
-        if response.status_code != 200:
-            return False
-        
-        # Analizar el contenido de la página con BeautifulSoup
-        soup = BeautifulSoup(response.text, 'html.parser')
-        
-        
-        principal = soup.get_text().strip()
-        
-        
-        if len(principal) < 50 or not soup.find(['article', 'main', 'div', 'section']):
-            return False
 
-        return True
+
+USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+class ZkraperEngine:
+    """
+    ZkraperEngine class manages the scraping process by initializing and running multiple scrapers.
+    It spawns scrapers concurrently, manages visited URLs, and logs the process.
+    """
+
+    def __init__(self, 
+                 starting_url:str, 
+                 max_scrapers: int, 
+                 config_file: str = './configs/scraper_config.json',
+                 log_config_file: str = './configs/log.yaml'):
+        
+        """
+        Initialize the ZkraperEngine instance.
+
+        Arguments:
+        - starting_url: str - The URL where the scraping process starts.
+        - max_scrapers: int - The maximum number of concurrent scrapers to run.
+        - config_file: str - Path to the scraper's configuration file (default is '../configs/scraper_config.json').
+        - log_config_file: str - Path to the logging configuration file (default is '../configs/log.yaml').
+        """
+        
+        self.__start_url = starting_url
+
+        self.__driver = start_driver(driver_options_path= config_file)
+        self.__max_scrapers = max_scrapers
+        self.queue = Queue() ## Initialize the queue which will be shared by all scrapers
+        self.visited_links = set() ## Maintain info about the urls that are already visited.
+        self.__logger =  self.__config_log(log_config_file)
+        
+
+
+    def __config_log(self, log_config_file: str, logger_name: str = 'scraper'):
+        """
+        Configures logging using a YAML configuration file.
+
+        Arguments:
+        - log_config_file: str - The path to the log configuration file.
+        - logger_name: str - The logger's name (default is 'scraper').
+
+        Returns:
+        - logger: logging.Logger - A logger instance for use in the class.
+        """
+        with open(log_config_file, 'r') as log_file:
+            config = yaml.safe_load(log_file.read())
+            logging.config.dictConfig(config)
+        
+        logger = logging.getLogger(logger_name)
+
+        return logger
     
-    except requests.RequestException as e:
-        return False, "Error al intentar acceder a la URL: {}".format(str(e))
-    
+    def quit(self):
+        """
+        Clean up the scraper engine by clearing the queue, visited links, and quitting the driver.
+        """
+        self.queue = Queue()
+        self.visited_links = set()
+        quit_driver(self.__driver)
 
-def scraper_routine(driver, url_queue:Queue, visited_urls:set, base_url:str, domain:str, output_dir:str):
-    if is_page_scrapeable(base_url):
-        print(f"Url: {base_url} is scrapeable")
-        scrape_page(driver= driver, url_queue=url_queue, visited_urls=visited_urls, base_url = base_url, domain = domain, output_dir=output_dir)
-    else:
-        print(f"Skipping: {base_url}")
+    def run(self):
+        """
+        Starts the ZkraperEngine. This method begins scraping by managing multiple scrapers concurrently.
+        Each scraper works on a URL from the queue and updates the visited links set.
+        """
+        self.__logger.info("Starting Zkraper Engine!")
+        self.queue.put(self.__start_url)
+        with executor(max_workers=self.__max_scrapers):
+            futures = list()
 
-# Main scraping function
-def scrape_page(driver, url_queue: Queue, visited_urls: set, base_url: str, domain: str, output_dir: str):
-    try:
-        driver.get(base_url)
-        html = driver.page_source
-        soup = BeautifulSoup(html, 'html.parser')
+            while not self.queue.empty() or any([future.running() for future in futures]):
+                if len(futures) < self.__max_scrapers and not self.queue.empty():
+                    # Get the next URL from the queue
+                    next_url = self.queue.get()
 
-        # Llamar a las funciones para extraer datos
-        meta_data = extract_meta_data(soup)
-        images = extract_images(soup, base_url)
-        links = extract_all_links(soup, domain, base_url)
-        text = extract_all_text(soup)
-        # Save the extracted data
-        save_to_files(meta_data, images, links,text, output_dir)
+                    if next_url not in self.visited_links:
+                        ### SPAWNS A NEW SCRAPER
+                        scraper = Scraper(url = next_url, driver = self.__driver, 
+                                      user_agent = USER_AGENT, logger = self.__logger, routine = scrape_page_basic)
+                    
+                        executor.submit(scraper.start_scraping())
 
-        # Process internal links
-        for link in links['internal']:
-            if link not in visited_urls:
-                visited_urls.add(link)
-                url_queue.put(link)
+                # Clean up completed futures
+                for future in as_completed(futures):
+                    futures.remove(future)
+                    scraper = future.result() 
+                    links = scraper.get_links()  
+                    ## Update the visited links
+                    self.queue.put(links)
+                    self.visited_links.update(links)
 
-        print(f"Scraper found {len(links['internal'])} internal links.")
-
-    except Exception as e:
-        print(f"Error scraping {base_url}: {e}")
-
-# Scraping engine with concurrency
-def scraping_engine(driver, base_url, domain, output_dir, max_scrapers=10):
-    # Initialize the queue and the set of visited URLs
-    url_queue = Queue()
-    visited_urls = set()
-    
-    # Add the initial URL to the queue
-    url_queue.put(base_url)
-    visited_urls.add(base_url)
-
-    print("Starting engine...")
-
-    # Create a pool of threads for concurrent scraping
-    with ThreadPoolExecutor(max_workers=max_scrapers) as executor:
-        # List of futures to track active threads
-        futures = []
-        scraper_id = 0
-        while not url_queue.empty() or any([future.running() for future in futures]):
-            if len(futures) < max_scrapers and not url_queue.empty():
-                # Get the next URL from the queue
-                next_url = url_queue.get()
-
-                # Start a new scraping task
-                print(f"Starting scraper for URL: {next_url}")
-                print(f"Scraper id: {scraper_id}")
-
-                unique_output_dir = os.path.join(output_dir, f"scraper={scraper_id}")
-                os.makedirs(unique_output_dir, exist_ok=True)
-                unique_output_dir = output_dir +"/" + "scraper="+str(scraper_id)
-                future = executor.submit(scraper_routine, driver, url_queue, visited_urls, next_url, domain, unique_output_dir)
-                futures.append(future)
-                scraper_id += 1
-                
-
-            # Clean up completed futures
-            for future in as_completed(futures):
-                futures.remove(future)
-
-    print("Web scraping engine terminated")
-    return "Web scraping engine terminated"
+        self.quit()

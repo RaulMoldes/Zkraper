@@ -1,7 +1,12 @@
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
+from urllib.parse import urlparse
 
-
+def extract_domain(url):
+    # Parse the base URL to extract the domain
+    parsed_url = urlparse(url)
+    domain = parsed_url.netloc
+    return domain
 
 def extract_meta_data(soup: BeautifulSoup):
     meta_data = {}
