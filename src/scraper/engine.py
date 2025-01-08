@@ -17,7 +17,8 @@ class ZkraperEngine:
     It spawns scrapers concurrently, manages visited URLs, and logs the process.
     """
 
-    def __init__(self, 
+    def __init__(self,
+                 pid: int, 
                  starting_url:str, 
                  max_scrapers: int, 
                  config_file: str = './configs/scraper_config.json',
@@ -27,20 +28,23 @@ class ZkraperEngine:
         Initialize the ZkraperEngine instance.
 
         Arguments:
+        - pid: int - The PID of the zkraper engine.
         - starting_url: str - The URL where the scraping process starts.
         - max_scrapers: int - The maximum number of concurrent scrapers to run.
         - config_file: str - Path to the scraper's configuration file (default is '../configs/scraper_config.json').
         - log_config_file: str - Path to the logging configuration file (default is '../configs/log.yaml').
         """
-        
+        self.__pid = pid
         self.__start_url = starting_url
-
         self.__driver = start_driver(driver_options_path= config_file)
         self.__max_scrapers = max_scrapers
         self.queue = Queue() ## Initialize the queue which will be shared by all scrapers
         self.visited_links = set() ## Maintain info about the urls that are already visited.
         self.__logger =  self.__config_log(log_config_file)
-        
+        self.next_pid = pid + 1
+
+    def get_pid(self):
+        return self.__pid
 
 
     def __config_log(self, log_config_file: str, logger_name: str = 'scraper'):
@@ -86,10 +90,12 @@ class ZkraperEngine:
                     next_url = self.queue.get()
 
                     if next_url not in self.visited_links:
+                        pid = self.next_pid
                         ### SPAWNS A NEW SCRAPER
-                        scraper = Scraper(url = next_url, driver = self.__driver, 
+                        scraper = Scraper(pid = pid, url = next_url, driver = self.__driver, 
                                       user_agent = USER_AGENT, logger = self.__logger, routine = scrape_page_basic)
-                    
+                        
+                        self.next_pid = pid + 1
                         executor.submit(scraper.start_scraping())
 
                 # Clean up completed futures
@@ -100,5 +106,7 @@ class ZkraperEngine:
                     ## Update the visited links
                     self.queue.put(links)
                     self.visited_links.update(links)
+                    output_path = 'Zkraper' + str(self.get_pid()) + '/' + scraper.get_pid()
+                    scraper.save_output(output_path)
 
         self.quit()

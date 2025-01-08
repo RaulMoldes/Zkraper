@@ -1,4 +1,4 @@
-# engine.py
+# main.py
 #!/usr/bin/env python3
 
 from src.scraper.engine import ZkraperEngine
@@ -29,6 +29,7 @@ def main():
 
 
     sk = ZkraperEngine(
+        pid = 1000,
         starting_url= args.base_url,
         max_scrapers = args.max_scrapers
 

@@ -1,19 +1,21 @@
 import requests
 from bs4 import BeautifulSoup
-from queue import Queue
-
+import os
+import pickle
 class Scraper:
     '''
     Class to encapsulate a scraper instance
     '''
 
-    def __init__(self, url, driver, user_agent, logger, routine: callable):
+    def __init__(self, pid:int, url:str, driver, user_agent, logger, routine: callable):
+        self.__pid = id
         self.__url = url
         self.__driver = driver
         self.__user_agent = user_agent
         self.__routine = routine
         self.logger = logger
         self.__links = set()
+        self.__output = None
 
     def get_driver(self):
         return self.__driver
@@ -26,6 +28,9 @@ class Scraper:
 
     def get_links(self):
         return self.__links
+    
+    def get_pid(self):
+        return self.__pid
     
     def get_soup_from_url(self):
         self.__driver.get(self.__url)
@@ -41,6 +46,7 @@ class Scraper:
             self.logger.info(f"Url: {self.__url} is scrapeable")
             soup = self.get_soup_from_url()
             response = self.__routine(soup = soup, logger = self.logger,  url = self.__url)
+            self.__output = response
             if response.get("status") == 'SUCCEED':
                 self.__links = set(response.get('links'))
         else:
@@ -49,7 +55,30 @@ class Scraper:
         return self
 
     
+    def save_output(self, output_path: str):
+        '''
+        Function to save the output of the scraper.
+        If the folder exists, creates four subfolders in it.
+        Otherwise, creates the folder and the subfolders.
     
+        Args:
+            output_path (str): The path where the main folder and subfolders will be created.
+        '''
+        if not os.path.exists(output_path):
+            # If the folder does not exist, create it along with subfolders
+            os.makedirs(output_path)  # Create the main folder
+
+        for subpath in ['images', 'text', 'links', 'meta']:
+            if not os.path.exists(os.path.join(output_path, subpath)):
+                os.makedirs(os.path.join(output_path, subpath))
+
+            if self.__output is not None:
+                data = self.__output.get(subpath)
+                
+                with open(os.path.join(output_path, subpath), 'wb'):
+                    pickle.dump(data)
+            
+
     def can_scrape(self, minimum_content_length = 50, items_to_check = ['article', 'main', 'div', 'section']):
         '''
         Basic function to check if we can scrape a web.
