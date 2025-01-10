@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    restart: always
+
+  scraper:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/
+      - BASE_URL=https://www.marca.com
+      - MAX_SCRAPERS=10
+
+    depends_on:
+      - mongo
+    command: ["python", "-m", "main"]
+
+volumes:
+  mongo-data:

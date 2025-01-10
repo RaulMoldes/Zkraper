@@ -46,4 +46,5 @@ COPY . /app
 RUN google-chrome --version
 
 
-CMD ["bash"]
+# Set default command to run the scraper
+CMD ["python","-m" ,"main"]

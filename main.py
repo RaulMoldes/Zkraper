@@ -2,36 +2,20 @@
 #!/usr/bin/env python3
 
 from src.scraper.engine import ZkraperEngine
-import argparse
-
+import os
 
 
 def main():
-    # Parse command line arguments
-    parser = argparse.ArgumentParser(description="Web scraping script.")
     
-  
     
-  
-    parser.add_argument(
-        "--base-url", 
-        type=str, 
-        required=True, 
-        help="Base URL of the website to scrape."
-    )
-    parser.add_argument(
-        "--max-scrapers", 
-        type=int, 
-        required=False, 
-        help="Maximum number of concurrent scrapers."
-    )
-    args = parser.parse_args()
 
+    base_url = os.getenv('BASE_URL', "https://www.marca.com")
+    max_scrapers = os.getenv('MAX_SCRAPERS', 10)
 
     sk = ZkraperEngine(
         pid = 1000,
-        starting_url= args.base_url,
-        max_scrapers = args.max_scrapers
+        starting_url= base_url,
+        max_scrapers = int(max_scrapers)
 
     )
     sk.run()

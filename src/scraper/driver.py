@@ -8,6 +8,15 @@ from selenium.webdriver.chrome.options import Options as ChromeOptions
 from webdriver_manager.chrome import ChromeDriverManager
 
 
+
+'''
+Module to encapsulate webdriver configuration.
+
+1. start_driver: function to create a driver from a specified configuration in a json file.
+
+2. quit_driver: function to terminate a driver.
+
+'''
 def start_driver(driver_options_path: str):
     # Load driver configuration from the JSON file
     with open(driver_options_path, 'r') as file:

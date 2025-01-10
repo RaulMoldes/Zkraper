@@ -125,3 +125,54 @@
 2025-01-08 16:13:26 [ThreadPoolExecutor-0_0] INFO [scraper.scraper] Url: https://www.marca.com/futbol/segunda/equipos.html?intcmp=MENUPROD&s_kw=equipos is scrapeable
 2025-01-08 16:13:27 [ThreadPoolExecutor-0_0] INFO [scraper.functions] Successfully scraped https://www.marca.com/futbol/segunda/equipos.html?intcmp=MENUPROD&s_kw=equipos.
 2025-01-08 16:13:27 [ThreadPoolExecutor-0_0] INFO [scraper.scraper] Url: https://www.marca.com/futbol/brasil/calendario.html?intcmp=MENUPROD&s_kw=futbol-campeonato-brasileiro is scrapeable
+2025-01-10 07:39:47 [MainThread] INFO [scraper.engine] Starting Zkraper Engine!
+2025-01-10 07:39:47 [ThreadPoolExecutor-0_0] INFO [scraper.scraper] Url: https://www.marca.com is scrapeable
+2025-01-10 07:39:49 [ThreadPoolExecutor-0_0] INFO [scraper.functions] Successfully scraped https://www.marca.com.
+2025-01-10 07:39:50 [ThreadPoolExecutor-0_0] INFO [scraper.scraper] Url: https://www.marca.com/motor/motogp/gp-tailandia.html?intcmp=MENUPROD&s_kw=moto-gp-tailandia is scrapeable
+2025-01-10 07:39:50 [ThreadPoolExecutor-0_0] INFO [scraper.functions] Successfully scraped https://www.marca.com/motor/motogp/gp-tailandia.html?intcmp=MENUPROD&s_kw=moto-gp-tailandia.
+2025-01-10 07:39:50 [ThreadPoolExecutor-0_0] INFO [scraper.scraper] Url: https://www.marca.com/olimpismo.html?intcmp=MENUPROD&s_kw=olimpismo is scrapeable
+2025-01-10 07:39:51 [ThreadPoolExecutor-0_0] INFO [scraper.functions] Successfully scraped https://www.marca.com/olimpismo.html?intcmp=MENUPROD&s_kw=olimpismo.
+2025-01-10 07:39:51 [ThreadPoolExecutor-0_0] INFO [scraper.scraper] Url: https://www.marca.com/motor/formula1/gp-gran-bretana.html?intcmp=MENUPROD&s_kw=formula-1-gp-gran-bretana is scrapeable
+2025-01-10 07:39:52 [ThreadPoolExecutor-0_0] INFO [scraper.functions] Successfully scraped https://www.marca.com/motor/formula1/gp-gran-bretana.html?intcmp=MENUPROD&s_kw=formula-1-gp-gran-bretana.
+2025-01-10 07:39:52 [ThreadPoolExecutor-0_0] INFO [scraper.scraper] Url: https://www.marca.com/coches-y-motos/salon-automovil-paris.html?intcmp=MENUPROD&s_kw=paris is scrapeable
+2025-01-10 07:39:52 [ThreadPoolExecutor-0_0] INFO [scraper.functions] Successfully scraped https://www.marca.com/coches-y-motos/salon-automovil-paris.html?intcmp=MENUPROD&s_kw=paris.
+2025-01-10 07:39:52 [ThreadPoolExecutor-0_0] INFO [scraper.scraper] Url: https://www.marca.com/futbol/premier-league/2025/01/10/isak-pone-precio-goles-150-millones-delantero-moda-premier.html is scrapeable
+2025-01-10 07:39:53 [ThreadPoolExecutor-0_0] INFO [scraper.functions] Successfully scraped https://www.marca.com/futbol/premier-league/2025/01/10/isak-pone-precio-goles-150-millones-delantero-moda-premier.html.
+2025-01-10 07:39:53 [ThreadPoolExecutor-0_0] INFO [scraper.scraper] Url: https://www.marca.com/futbol/supercopa-espana.html is scrapeable
+2025-01-10 07:39:53 [ThreadPoolExecutor-0_0] INFO [scraper.functions] Successfully scraped https://www.marca.com/futbol/supercopa-espana.html.
+2025-01-10 07:39:53 [ThreadPoolExecutor-0_0] INFO [scraper.scraper] Url: https://www.marca.com/futbol/liga-francesa/clasificacion.html?intcmp=MENUPROD&s_kw=liga-francesa-clasificacion is scrapeable
+2025-01-10 07:39:54 [ThreadPoolExecutor-0_0] INFO [scraper.functions] Successfully scraped https://www.marca.com/futbol/liga-francesa/clasificacion.html?intcmp=MENUPROD&s_kw=liga-francesa-clasificacion.
+2025-01-10 07:39:54 [ThreadPoolExecutor-0_0] INFO [scraper.scraper] Url: https://www.marca.com/motor/motogp/gp-holanda.html?intcmp=MENUPROD&s_kw=moto-gp-paises-bajos is scrapeable
+2025-01-10 07:39:54 [ThreadPoolExecutor-0_0] INFO [scraper.functions] Successfully scraped https://www.marca.com/motor/motogp/gp-holanda.html?intcmp=MENUPROD&s_kw=moto-gp-paises-bajos.
+2025-01-10 07:39:55 [ThreadPoolExecutor-0_0] INFO [scraper.scraper] Url: https://www.marca.com/futbol/leagues-cup.html?intcmp=MENUPROD&s_kw=futbol-leagues-cup is scrapeable
+2025-01-10 07:39:55 [ThreadPoolExecutor-0_0] INFO [scraper.functions] Successfully scraped https://www.marca.com/futbol/leagues-cup.html?intcmp=MENUPROD&s_kw=futbol-leagues-cup.
+2025-01-10 07:39:55 [ThreadPoolExecutor-0_0] INFO [scraper.scraper] Url: https://www.marca.com/futbol/europa-league/equipos.html?intcmp=MENUPROD&s_kw=europa-league-equipos is scrapeable
+2025-01-10 07:39:56 [ThreadPoolExecutor-0_0] INFO [scraper.functions] Successfully scraped https://www.marca.com/futbol/europa-league/equipos.html?intcmp=MENUPROD&s_kw=europa-league-equipos.
+2025-01-10 07:39:56 [ThreadPoolExecutor-0_0] INFO [scraper.scraper] Url: https://www.marca.com/futbol/conference-league.html?intcmp=MENUPROD&s_kw=conference-league is scrapeable
+2025-01-10 07:39:56 [ThreadPoolExecutor-0_0] INFO [scraper.functions] Successfully scraped https://www.marca.com/futbol/conference-league.html?intcmp=MENUPROD&s_kw=conference-league.
+2025-01-10 07:39:57 [ThreadPoolExecutor-0_0] INFO [scraper.scraper] Url: https://www.marca.com/motor/formula1/gp-paises-bajos.html?intcmp=MENUPROD&s_kw=formula-1-gp-paises-bajos is scrapeable
+2025-01-10 07:39:57 [ThreadPoolExecutor-0_0] INFO [scraper.functions] Successfully scraped https://www.marca.com/motor/formula1/gp-paises-bajos.html?intcmp=MENUPROD&s_kw=formula-1-gp-paises-bajos.
+2025-01-10 07:39:57 [ThreadPoolExecutor-0_0] INFO [scraper.scraper] Url: https://www.marca.com/baloncesto/supercopa.html?intcmp=MENUPROD&s_kw=baloncesto-supercopa is scrapeable
+2025-01-10 07:39:58 [ThreadPoolExecutor-0_0] INFO [scraper.functions] Successfully scraped https://www.marca.com/baloncesto/supercopa.html?intcmp=MENUPROD&s_kw=baloncesto-supercopa.
+2025-01-10 07:39:58 [ThreadPoolExecutor-0_0] INFO [scraper.scraper] Url: https://www.marca.com/coches-y-motos.html?intcmp=MENUMIGA&s_kw=marca-coches is scrapeable
+2025-01-10 07:39:58 [ThreadPoolExecutor-0_0] INFO [scraper.functions] Successfully scraped https://www.marca.com/coches-y-motos.html?intcmp=MENUMIGA&s_kw=marca-coches.
+2025-01-10 07:39:59 [ThreadPoolExecutor-0_0] INFO [scraper.scraper] Url: https://www.marca.com/futbol/liga-mx/apertura/calendario.html?intcmp=MENUPROD&s_kw=futbol-mexico-calendario is scrapeable
+2025-01-10 07:39:59 [ThreadPoolExecutor-0_0] INFO [scraper.functions] Successfully scraped https://www.marca.com/futbol/liga-mx/apertura/calendario.html?intcmp=MENUPROD&s_kw=futbol-mexico-calendario.
+2025-01-10 07:39:59 [ThreadPoolExecutor-0_0] INFO [scraper.scraper] Url: https://www.marca.com/motor.html?intcmp=MENUPROD&s_kw=motor is scrapeable
+2025-01-10 07:40:00 [ThreadPoolExecutor-0_0] INFO [scraper.functions] Successfully scraped https://www.marca.com/motor.html?intcmp=MENUPROD&s_kw=motor.
+2025-01-10 07:40:00 [ThreadPoolExecutor-0_0] INFO [scraper.scraper] Url: https://www.marca.com/motor/ocio.html?intcmp=MENUPROD&s_kw=ocio is scrapeable
+2025-01-10 07:40:00 [ThreadPoolExecutor-0_0] INFO [scraper.functions] Successfully scraped https://www.marca.com/motor/ocio.html?intcmp=MENUPROD&s_kw=ocio.
+2025-01-10 07:40:01 [ThreadPoolExecutor-0_0] INFO [scraper.scraper] Url: https://www.marca.com/futbol/copa-libertadores.html?intcmp=MENUPROD&s_kw=futbol-conmebol-libertadores is scrapeable
+2025-01-10 07:40:01 [ThreadPoolExecutor-0_0] INFO [scraper.functions] Successfully scraped https://www.marca.com/futbol/copa-libertadores.html?intcmp=MENUPROD&s_kw=futbol-conmebol-libertadores.
+2025-01-10 07:40:01 [ThreadPoolExecutor-0_0] INFO [scraper.scraper] Url: https://www.marca.com/motor/rallies.html?intcmp=MENUPROD&s_kw=rallies is scrapeable
+2025-01-10 07:40:02 [ThreadPoolExecutor-0_0] INFO [scraper.functions] Successfully scraped https://www.marca.com/motor/rallies.html?intcmp=MENUPROD&s_kw=rallies.
+2025-01-10 07:40:02 [ThreadPoolExecutor-0_0] INFO [scraper.scraper] Url: https://www.marca.com/futbol/premier-league/equipos.html?intcmp=MENUPROD&s_kw=premier-league-equipos is scrapeable
+2025-01-10 07:40:02 [ThreadPoolExecutor-0_0] INFO [scraper.functions] Successfully scraped https://www.marca.com/futbol/premier-league/equipos.html?intcmp=MENUPROD&s_kw=premier-league-equipos.
+2025-01-10 07:40:02 [ThreadPoolExecutor-0_0] INFO [scraper.scraper] Url: https://www.marca.com/futbol/futbol-femenino/champions-league/clasificacion.html?intcmp=MENUPROD&s_kw=futbol-champions-league-femenina-clasificacion is scrapeable
+2025-01-10 07:40:03 [ThreadPoolExecutor-0_0] INFO [scraper.functions] Successfully scraped https://www.marca.com/futbol/futbol-femenino/champions-league/clasificacion.html?intcmp=MENUPROD&s_kw=futbol-champions-league-femenina-clasificacion.
+2025-01-10 07:40:03 [ThreadPoolExecutor-0_0] INFO [scraper.scraper] Url: https://www.marca.com/futbol/primera/equipos.html?intcmp=MENUMIGA&s_kw=equipos is scrapeable
+2025-01-10 07:40:03 [ThreadPoolExecutor-0_0] INFO [scraper.functions] Successfully scraped https://www.marca.com/futbol/primera/equipos.html?intcmp=MENUMIGA&s_kw=equipos.
+2025-01-10 07:40:04 [ThreadPoolExecutor-0_0] INFO [scraper.scraper] Url: https://www.marca.com/futbol/futbol-sala.html?intcmp=MENUPROD&s_kw=futbol-sala is scrapeable
+2025-01-10 07:40:04 [ThreadPoolExecutor-0_0] INFO [scraper.functions] Successfully scraped https://www.marca.com/futbol/futbol-sala.html?intcmp=MENUPROD&s_kw=futbol-sala.
+2025-01-10 07:40:04 [ThreadPoolExecutor-0_0] INFO [scraper.scraper] Url: https://www.marca.com/futbol/primera-division/calendario.html?intcmp=MENUPROD&s_kw=primera-division-calendario is scrapeable
+2025-01-10 07:40:05 [ThreadPoolExecutor-0_0] INFO [scraper.functions] Successfully scraped https://www.marca.com/futbol/primera-division/calendario.html?intcmp=MENUPROD&s_kw=primera-division-calendario.

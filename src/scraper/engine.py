@@ -26,9 +26,10 @@ class ZkraperEngine:
     def __init__(self,
                  pid: int, 
                  starting_url:str, 
-                 max_scrapers: int, 
+                 max_scrapers: int = None, 
                  config_file: str = './configs/scraper_config.json',
-                 log_config_file: str = './configs/log.yaml'):
+                 log_config_file: str = './configs/log.yaml',
+                 log_file: str = './log/scraper.log'):
         
         """
         Initialize the ZkraperEngine instance.
@@ -43,12 +44,15 @@ class ZkraperEngine:
         self.__pid = pid
         self.__start_url = starting_url
         self.__driver = start_driver(driver_options_path= config_file)
-        self.__max_scrapers = max_scrapers
+        if max_scrapers is not None:
+            self.__max_scrapers = max_scrapers
+        else:
+            self.__max_scrapers = 10
         self.queue = Queue() ## Initialize the queue which will be shared by all scrapers
         self.visited_links = set() ## Maintain info about the urls that are already visited.
-        print("configurando log")
+        
         self.__logger =  self.__config_log(log_config_file)
-        print("se configuro log")
+        self.__log_file = log_file
         self.next_pid = pid + 1
 
     def get_pid(self):
@@ -81,6 +85,11 @@ class ZkraperEngine:
         self.queue = Queue()
         self.visited_links = set()
         quit_driver(self.__driver)
+        ## TRUNCATE THE LOG FILE
+        
+        with open(self.__log_file, 'w'):
+            pass  # Opening the file in write mode clears its contents
+
 
     def run(self):
         """
@@ -89,6 +98,7 @@ class ZkraperEngine:
         """
         self.__logger.info("Starting Zkraper Engine!")
         self.queue.put(self.__start_url)
+        
         with ThreadPoolExecutor(max_workers=self.__max_scrapers) as executor:
             futures = list()
 
@@ -112,15 +122,14 @@ class ZkraperEngine:
                     futures.remove(future)
                     scraper = future.result() 
                     links = scraper.get_links()  
-                    sid = scraper.get_pid()
+
                     ## Update the visited links
                     for l in list(links):
                         self.queue.put(l)
                         self.visited_links.update(l)
-                    id = self.get_pid()
-                   
-                    print(sid)
-                    output_path = 'Zkraper-' + str(id) + '/' + str(sid)
-                    scraper.save_output(output_path)
+                    
+                  
+                    if scraper.get_output():
+                        scraper.save_output()
 
         self.quit()
