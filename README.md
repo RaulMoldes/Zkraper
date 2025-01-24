@@ -29,7 +29,25 @@ To modify the **start_url** or the **max_scrapers** parameters, modify the envir
 Note that the first url you pass to the scraper must be a scrapeable url for the engine to start.
 
 To see the output, connect to the mongo instance running in the mongo container created in the docker compose file.
+
+```bash
+docker exec -it mongo bash
+```
 Inside the container, open a mongo shell:
+
 ```bash
 mongosh
+```
+Then, you can navigate to the scraper database and visualize its outputs:
+
+```bash
+
+show dbs;
+
+use zkraper_db;
+
+show collections;
+
+db.scraper_logs.findOne();
+
 ```
